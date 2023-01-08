@@ -1,8 +1,9 @@
 return {
-  channel = 9999,
-  station = "An mStream Station",
+  channel = 2048,
+  station = "Knijn Radio",
   directories = {
-    "/songs/"
+    "/disk/","/disk2/","/disk3/songs/"
   },
-  volume = 1
+  volume = 0,
+  modem = "right"
 }
