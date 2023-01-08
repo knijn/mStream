@@ -24,6 +24,26 @@ local unescape = function(url)
   return url:gsub("%%(%x%x)", hex_to_char)
 end
 
+local function update()
+    local s = shell.getRunningProgram()
+    handle = http.get("https://raw.githubusercontent.com/knijn/mStream/main/mStream.lua")
+    if not handle then
+        error("Could not download new version, Please update manually.",0)
+    else
+        data = handle.readAll()
+        local f = fs.open(s, "w")
+        handle.close()
+        f.write(data)
+        f.close()
+        error("Please reopen mStream")
+    end
+end
+
+local h = http.get("https://raw.githubusercontent.com/knijn/mStream/main/data.json")
+local latestVersion = textutils.unserialiseJSON(h.readAll()).latestVersion
+
+if latestVersion > version then update() end
+
 local function playSong(file)
   currentFile = file
   title = fs.getName(unescape(file)):sub(1, -7)
@@ -46,7 +66,7 @@ local function draw()
     term.setBackgroundColor(colors.black)
     term.clear()
     term.setCursorPos(1,1)
-    term.write("mStream: " .. station .. "  |  " .. channel)
+    term.write("mStream " .. version .. ": " .. station .. "  |  " .. channel)
     term.setCursorPos(1,ySize - 1)
     term.write("Now Playing")
     term.setCursorPos(1,ySize)
