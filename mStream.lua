@@ -5,9 +5,9 @@ local id = os.getComputerID()
 local protocol = "CCSMB-5"
 local directories = config.directories
 local volume = config.volume or 1
-local version = 1.1
+local version = 1.2
 
-local modem = peripheral.find("modem") or error("A modem must be attached")
+local modem = peripheral.wrap(config.modem) or peripheral.find("modem") or error("A modem must be attached")
 local speaker = peripheral.find("speaker") or error("A speaker must be attached")
 local title = "Nothing is playing right now"
 
