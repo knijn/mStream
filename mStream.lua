@@ -1,11 +1,9 @@
-local mode = settings.get("mStream.defaultMode","auto")
-local modes = {"auto","tts","music"}
-local channel = settings.get("mStream.channel")
-local station = settings.get("mStream.station","An mStream Station")
-local volume = settings.get("mStream.volume",1)
+local config = require("mconfig") or error("You must set up a config file")
+local channel = config.channel or error("You must configure a channel")
+local station = config.station or "an mStream Station"
 local id = os.getComputerID()
 local protocol = "CCSMB-5"
-local songDir = {"/songs/"}
+local directories = config.directories
 
 local modem = peripheral.find("modem") or error("A modem must be attached")
 local speaker = peripheral.find("speaker") or error("A speaker must be attached")
@@ -56,32 +54,18 @@ local function draw()
   end
 end
 
-local function modeHandler()
+local function player()
   while true do
-    if mode == "auto" then
-      for i,folder in pairs(songDir) do
+      for i,folder in pairs(directories) do
         for i,file in pairs(fs.list(folder)) do
           playSong(folder .. file)
         end
       end
-    end
   end
 end
 
-local function keyHandler()
-  while true do
-    local event, key, is_held = os.pullEvent("key")
-    if key == keys.three then
-      mode = "music"
-    elseif key == keys.two then
-      mode = "tts"
-    elseif key == keys.one then
-      mode = "auto"
-    end
-  end
-end
 
 
 while true do
-  parallel.waitForAny(draw,keyHandler,modeHandler)
+  parallel.waitForAny(draw,player)
 end
