@@ -4,6 +4,7 @@ local station = config.station or "an mStream Station"
 local id = os.getComputerID()
 local protocol = "CCSMB-5"
 local directories = config.directories
+local version = 1.0
 
 local modem = peripheral.find("modem") or error("A modem must be attached")
 local speaker = peripheral.find("speaker") or error("A speaker must be attached")
