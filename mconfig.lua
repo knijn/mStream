@@ -3,5 +3,6 @@ return {
   station = "An mStream Station",
   directories = {
     "/songs/"
-  }
+  },
+  volume = 1
 }
